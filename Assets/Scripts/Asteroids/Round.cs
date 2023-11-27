@@ -11,6 +11,7 @@ public class Round : IRound, IRoundData, IPlayerData {
     private readonly Field.Field _field;
 
     private readonly HashSet<IBehavior> _behaviors = new();
+    private readonly Queue<Action> _deferred = new();
 
     private float _asteroidSpawnCooldown = Static.GameAsteroidSpawnCooldown;
     private float _ufoSpawnCooldown = Static.GameUfoSpawnCooldown;
@@ -58,6 +59,7 @@ public class Round : IRound, IRoundData, IPlayerData {
 
         CallTicks(deltaTime);
         CheckCollisions();
+        InvokeDeferred();
 
         _asteroidSpawnCooldown -= deltaTime;
         _ufoSpawnCooldown -= deltaTime;
@@ -89,10 +91,19 @@ public class Round : IRound, IRoundData, IPlayerData {
     }
 
     private void CheckCollisions() {
-        var collisions = _field.GetCollisions();
-        foreach (var (b1, b2) in collisions) {
-            b1.OnCollision(b2);
-            b2.OnCollision(b1);
+        foreach (var (b1, b2) in _field.GetCollisions()) {
+            CallDeferred(() => b1.OnCollision(b2));
+            CallDeferred(() => b2.OnCollision(b1));
+        }
+    }
+
+    private void CallDeferred(Action action) {
+        _deferred.Enqueue(action);
+    }
+
+    private void InvokeDeferred() {
+        while (_deferred.TryDequeue(out var action)) {
+            action.Invoke();
         }
     }
 
