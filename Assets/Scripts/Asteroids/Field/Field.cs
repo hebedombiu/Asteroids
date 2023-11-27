@@ -53,8 +53,6 @@ public class Field : IField {
     }
 
     public IEnumerable<(ICollisionable, ICollisionable)> GetCollisions() {
-        var collisions = new List<(ICollisionable, ICollisionable)>();
-
         var a = _colliders.ToArray();
 
         for (var i1 = 0; i1 < a.Length; i1++) {
@@ -63,12 +61,10 @@ public class Field : IField {
                 var c2 = a[i2];
 
                 if (c1.IsCollide(c2)) {
-                    collisions.Add((c1.Behavior, c2.Behavior));
+                    yield return (c1.Behavior, c2.Behavior);
                 }
             }
         }
-
-        return collisions;
     }
 }
 
