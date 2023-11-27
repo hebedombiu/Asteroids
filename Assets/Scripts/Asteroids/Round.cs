@@ -13,9 +13,6 @@ public class Round : IRound, IRoundData, IPlayerData {
     private readonly HashSet<IBehavior> _behaviors = new();
     private readonly Queue<Action> _deferred = new();
 
-    private float _asteroidSpawnCooldown = Static.GameAsteroidSpawnCooldown;
-    private float _ufoSpawnCooldown = Static.GameUfoSpawnCooldown;
-
     public IControls Controls { get; }
     public Player Player { get; }
 
@@ -38,31 +35,17 @@ public class Round : IRound, IRoundData, IPlayerData {
 
         _field = new Field.Field(width, height);
 
-        Player = Player.Create(this, new Vector());
-        CreateBehavior(Player);
+        var game = AlmostClassicGame.Create(this);
 
-        for (var i = 0; i < 5; i++) {
-            CreateBehavior(Asteroid.Create(this, _field.RandomPosition, Math.RandomDirection()));
-        }
+        Player = game.Player;
+
+        CreateBehavior(game);
     }
 
     private void Update(float deltaTime) {
-        if (_asteroidSpawnCooldown < 0) {
-            CreateBehavior(Asteroid.Create(this, _field.RandomPosition, Math.RandomDirection()));
-            _asteroidSpawnCooldown = Static.GameAsteroidSpawnCooldown;
-        }
-
-        if (_ufoSpawnCooldown < 0) {
-            CreateBehavior(Ufo.Create(this, _field.RandomPosition));
-            _ufoSpawnCooldown = Static.GameUfoSpawnCooldown;
-        }
-
         CallTicks(deltaTime);
         CheckCollisions();
         InvokeDeferred();
-
-        _asteroidSpawnCooldown -= deltaTime;
-        _ufoSpawnCooldown -= deltaTime;
     }
 
     public void CreateBehavior(IBehavior behavior) {
