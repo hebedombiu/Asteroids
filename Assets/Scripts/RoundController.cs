@@ -27,7 +27,7 @@ public class RoundController : MonoBehaviour {
         _roundData.CreateBehaviorEvent += RoundDataOnCreateBehaviorEvent;
         _roundData.DestroyBehaviorEvent += RoundDataOnDestroyBehaviorEvent;
 
-        ui.Init(roundData.PlayerData);
+        ui.Init(roundData.PlayerData, roundData.GameData);
 
         foreach (var behavior in _roundData.Behaviors) {
             CreateView(behavior);

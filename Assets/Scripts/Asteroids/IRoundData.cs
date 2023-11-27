@@ -10,6 +10,7 @@ public interface IRoundData {
 
     public IReadOnlyCollection<IBehavior> Behaviors { get; }
     public IPlayerData PlayerData { get; }
+    public IGameData GameData { get; }
 }
 
 }

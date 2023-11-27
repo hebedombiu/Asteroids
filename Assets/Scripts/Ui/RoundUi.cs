@@ -15,9 +15,11 @@ public class RoundUi : MonoBehaviour {
     [SerializeField] private TMP_Text laserAddCooldownText;
 
     private IPlayerData _playerData;
+    private IGameData _gameData;
 
-    public void Init(IPlayerData playerData) {
+    public void Init(IPlayerData playerData, IGameData gameData) {
         _playerData = playerData;
+        _gameData = gameData;
         SetText();
     }
 
@@ -26,7 +28,7 @@ public class RoundUi : MonoBehaviour {
     }
 
     private void SetText() {
-        pointsText.text = $"{_playerData.Points}";
+        pointsText.text = $"{_gameData.Points}";
         coordsText.text = $"Coords: {_playerData.Position.ToVector2()}";
         angleText.text = $"Angle: {_playerData.Angle}";
         speedText.text = $"Speed: {_playerData.Speed}";

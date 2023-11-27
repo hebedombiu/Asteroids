@@ -1,11 +1,12 @@
-﻿namespace Asteroids.Behavior {
+﻿namespace Asteroids.Behavior.Game {
 
-public class AlmostClassicGame : ITickable {
+public class AlmostClassicGame : ITickable, IGameBehavior {
     private readonly IRound _round;
 
     private float _asteroidSpawnCooldown = Static.GameAsteroidSpawnCooldown;
     private float _ufoSpawnCooldown = Static.GameUfoSpawnCooldown;
 
+    public int Points { get; private set; }
     public Player Player { get; private set; }
 
     public static AlmostClassicGame Create(IRound round) {
@@ -41,6 +42,10 @@ public class AlmostClassicGame : ITickable {
             _round.CreateBehavior(Ufo.Create(_round, _round.Field.RandomPosition));
             _ufoSpawnCooldown = Static.GameUfoSpawnCooldown;
         }
+    }
+
+    public void AddPoints(int count) {
+        Points += count;
     }
 }
 

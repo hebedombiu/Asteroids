@@ -71,7 +71,7 @@ public partial class Game : IMenu, IGameOver {
 
     private void OnRoundExit() {
         _controls.Reset();
-        _lastPoints = _round.Points;
+        _lastPoints = _round.GameData.Points;
         _round.GameOverEvent -= RoundOnGameOverEvent;
         _round = null;
         OnRoundExitEvent?.Invoke();

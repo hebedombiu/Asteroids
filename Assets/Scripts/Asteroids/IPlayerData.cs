@@ -1,7 +1,6 @@
 ﻿namespace Asteroids {
 
 public interface IPlayerData {
-    int Points { get; }
     Vector Position { get; }
     float Angle { get; }
     float Speed { get; }

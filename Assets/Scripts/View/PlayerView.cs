@@ -18,7 +18,7 @@ public class PlayerView : MonoBehaviour {
     private void UpdateView() {
         var t = transform;
         t.position = _player.Position.ToVector2();
-        t.rotation = Quaternion.AngleAxis(_player.RotationAngle, Vector3.back);
+        t.rotation = Quaternion.AngleAxis(_player.Angle, Vector3.back);
         t.localScale = new Vector2(_player.Size, _player.Size);
     }
 }

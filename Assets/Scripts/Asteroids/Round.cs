@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using Asteroids.Behavior;
+using Asteroids.Behavior.Game;
 using Asteroids.Field;
 
 namespace Asteroids {
 
-public class Round : IRound, IRoundData, IPlayerData {
+public class Round : IRound, IRoundData {
     private readonly ITicker _ticker;
     private readonly Field.Field _field;
 
     private readonly HashSet<IBehavior> _behaviors = new();
     private readonly Queue<Action> _deferred = new();
 
-    public IControls Controls { get; }
-    public Player Player { get; }
+    private readonly IGameBehavior _gameBehavior;
 
-    public int Points { get; private set; }
+    public IControls Controls { get; }
+    public Player Player => _gameBehavior.Player;
 
     IField IRound.Field => _field;
 
@@ -25,7 +26,8 @@ public class Round : IRound, IRoundData, IPlayerData {
     public event Action GameOverEvent;
 
     public IReadOnlyCollection<IBehavior> Behaviors => _behaviors;
-    public IPlayerData PlayerData => this;
+    public IPlayerData PlayerData => _gameBehavior.Player;
+    public IGameData GameData => _gameBehavior;
 
     public Round(float width, float height, ITicker ticker, IControls controls) {
         _ticker = ticker;
@@ -35,11 +37,8 @@ public class Round : IRound, IRoundData, IPlayerData {
 
         _field = new Field.Field(width, height);
 
-        var game = AlmostClassicGame.Create(this);
-
-        Player = game.Player;
-
-        CreateBehavior(game);
+        _gameBehavior = AlmostClassicGame.Create(this);
+        CreateBehavior(_gameBehavior);
     }
 
     private void Update(float deltaTime) {
@@ -64,7 +63,7 @@ public class Round : IRound, IRoundData, IPlayerData {
     }
 
     void IRound.AddPoints(int count) {
-        Points += count;
+        _gameBehavior.AddPoints(count);
     }
 
     private void CallTicks(float deltaTime) {
@@ -93,13 +92,6 @@ public class Round : IRound, IRoundData, IPlayerData {
     ~Round() {
         _ticker.TickEvent -= Update;
     }
-
-    public Vector Position => Player.Position;
-    public float Angle => Player.RotationAngle;
-    public float Speed => Player.Speed;
-    public int LaserCount => Player.LaserCount;
-    public float LaserCooldown => Player.LaserCooldown;
-    public float LaserAddCooldown => Player.LaserAddCooldown;
 }
 
 }

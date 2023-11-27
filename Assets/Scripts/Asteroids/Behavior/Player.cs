@@ -2,12 +2,12 @@
 
 namespace Asteroids.Behavior {
 
-public class Player : ICollisionable, ITickable, IDestroyable {
+public class Player : ICollisionable, ITickable, IDestroyable, IPlayerData {
     private readonly IRound _round;
 
     private Vector _moveVector;
 
-    private float _rotationAngle;
+    private float _angle;
 
     private float _bulletCooldown;
     private float _laserCooldown;
@@ -16,7 +16,7 @@ public class Player : ICollisionable, ITickable, IDestroyable {
 
     private ICircleCollider _collider;
 
-    public float RotationAngle => _rotationAngle;
+    public float Angle => _angle;
     public float Size => _collider.Size;
 
     private Player(IRound round) {
@@ -67,24 +67,24 @@ public class Player : ICollisionable, ITickable, IDestroyable {
         }
 
         if (_round.Controls.IsLeftPressed) {
-            _rotationAngle += -Static.PlayerRotateSpeed * deltaTime;
+            _angle += -Static.PlayerRotateSpeed * deltaTime;
         }
 
         if (_round.Controls.IsRightPressed) {
-            _rotationAngle += Static.PlayerRotateSpeed * deltaTime;
+            _angle += Static.PlayerRotateSpeed * deltaTime;
         }
 
         if (_round.Controls.IsForwardPressed) {
-            _moveVector += Math.AngleToVector(_rotationAngle) * Static.PlayerAccelerateSpeed * deltaTime;
+            _moveVector += Math.AngleToVector(_angle) * Static.PlayerAccelerateSpeed * deltaTime;
         }
 
         if (_round.Controls.IsShootPressed && _bulletCooldown <= 0) {
-            _round.CreateBehavior(Bullet.Create(_round, Position, Math.AngleToVector(_rotationAngle)));
+            _round.CreateBehavior(Bullet.Create(_round, Position, Math.AngleToVector(_angle)));
             _bulletCooldown = Static.PlayerBulletCooldown;
         }
 
         if (_round.Controls.IsLaserPressed && _laserCount > 0 && _laserCooldown <= 0) {
-            _round.CreateBehavior(Laser.Create(_round, Position, Math.AngleToVector(_rotationAngle)));
+            _round.CreateBehavior(Laser.Create(_round, Position, Math.AngleToVector(_angle)));
             _laserCount -= 1;
             _laserCooldown = Static.PlayerLaserCooldown;
         }
