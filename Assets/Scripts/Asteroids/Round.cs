@@ -67,8 +67,8 @@ public class Round : IRound, IRoundData {
     }
 
     private void CallTicks(float deltaTime) {
-        foreach (var behavior in _behaviors.ToArray()) {
-            if (behavior is ITickable tickable) tickable.OnTick(deltaTime);
+        foreach (var behavior in _behaviors) {
+            if (behavior is ITickable tickable) CallDeferred(() => tickable.OnTick(deltaTime));
         }
     }
 
