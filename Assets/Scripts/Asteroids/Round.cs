@@ -29,7 +29,7 @@ public class Round : IRound, IRoundData {
     public IPlayerData PlayerData => _gameBehavior.Player;
     public IGameData GameData => _gameBehavior;
 
-    public Round(float width, float height, ITicker ticker, IControls controls) {
+    public Round(float width, float height, ITicker ticker, IControls controls, IGameBehaviorFactory factory) {
         _ticker = ticker;
         Controls = controls;
 
@@ -37,7 +37,7 @@ public class Round : IRound, IRoundData {
 
         _field = new Field.Field(width, height);
 
-        _gameBehavior = AlmostClassicGame.Create(this);
+        _gameBehavior = factory.Create(this);
         CreateBehavior(_gameBehavior);
     }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using Asteroids.Behavior.Game;
 using Asteroids.Fsm;
 
 namespace Asteroids {
@@ -64,7 +65,7 @@ public partial class Game : IMenu, IGameOver {
     }
 
     private void OnRoundEnter() {
-        _round = new Round(_width, _height, _ticker, _controls);
+        _round = new Round(_width, _height, _ticker, _controls, new AlmostClassicGameFactory());
         _round.GameOverEvent += RoundOnGameOverEvent;
         OnRoundEnterEvent?.Invoke(_round);
     }
