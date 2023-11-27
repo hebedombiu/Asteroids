@@ -1,6 +1,6 @@
 ﻿namespace Asteroids.Behavior {
 
-public class Shard : Projectile, IBehavior {
+public class Shard : Projectile {
     private Shard(IRound round, Vector moveVector) : base(round, moveVector) { }
 
     public static Shard Create(IRound round, Vector position, Vector moveVector) {

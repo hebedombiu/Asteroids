@@ -1,6 +1,6 @@
 ﻿namespace Asteroids.Behavior {
 
-public class Bullet : Projectile, IBehavior {
+public class Bullet : Projectile {
     private float _lifetime = Static.BulletLifetime;
 
     private Bullet(IRound round, Vector moveVector) : base(round, moveVector) { }

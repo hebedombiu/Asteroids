@@ -8,7 +8,7 @@ public interface IField {
 
     public Vector RandomPosition { get; }
 
-    ICollider CreateCollider(IBehavior behavior, Vector position, float size);
+    ICollider CreateCollider(ICollisionable behavior, Vector position, float size);
     void DestroyCollider(ICollider collider);
 
     void MoveCollider(ICollider collider, Vector direction);

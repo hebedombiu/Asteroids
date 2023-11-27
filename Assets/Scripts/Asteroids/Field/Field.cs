@@ -39,7 +39,7 @@ public class Field : IField {
         return new Vector(x, y);
     }
 
-    ICollider IField.CreateCollider(IBehavior behavior, Vector position, float size) {
+    ICollider IField.CreateCollider(ICollisionable behavior, Vector position, float size) {
         var collider = new Collider(behavior, size, position);
         _colliders.Add(collider);
         return collider;
@@ -53,8 +53,8 @@ public class Field : IField {
         collider.Position = PortalPosition(collider.Position + direction, collider.Size);
     }
 
-    public IEnumerable<(IBehavior, IBehavior)> GetCollisions() {
-        var collisions = new List<(IBehavior, IBehavior)>();
+    public IEnumerable<(ICollisionable, ICollisionable)> GetCollisions() {
+        var collisions = new List<(ICollisionable, ICollisionable)>();
 
         var a = _colliders.ToArray();
 

@@ -2,7 +2,7 @@
 
 namespace Asteroids.Behavior {
 
-public class Ufo : IBehavior {
+public class Ufo : ICollisionable, ITickable, IDestroyable {
     private readonly IRound _round;
 
     private ICollider _collider;
@@ -24,11 +24,11 @@ public class Ufo : IBehavior {
         _collider = _round.Field.CreateCollider(this, position, Static.UfoSize);
     }
 
-    void IBehavior.OnDestroy() {
+    public void OnDestroy() {
         _round.Field.DestroyCollider(_collider);
     }
 
-    void IBehavior.OnCollision(IBehavior other) {
+    public void OnCollision(IBehavior other) {
         if (other is Bullet bullet) {
             _round.DestroyBehavior(this);
 
@@ -42,7 +42,7 @@ public class Ufo : IBehavior {
         }
     }
 
-    void IBehavior.OnTick(float deltaTime) {
+    public void OnTick(float deltaTime) {
         var direction = (_round.Player.Position - _collider.Position).Normalized;
         _round.Field.MoveCollider(_collider, direction * Static.UfoSpeed * deltaTime);
     }

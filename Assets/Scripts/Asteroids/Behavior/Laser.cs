@@ -2,7 +2,7 @@
 
 namespace Asteroids.Behavior {
 
-public class Laser : IBehavior {
+public class Laser : ICollisionable, ITickable, IDestroyable {
     private readonly IRound _round;
     private readonly Vector _startPosition;
     private readonly Vector _direction;
@@ -35,15 +35,15 @@ public class Laser : IBehavior {
         }
     }
 
-    void IBehavior.OnDestroy() {
+    public void OnDestroy() {
         foreach (var collision in _collisions) {
             _round.Field.DestroyCollider(collision);
         }
     }
 
-    void IBehavior.OnCollision(IBehavior other) { }
+    public void OnCollision(IBehavior other) { }
 
-    void IBehavior.OnTick(float deltaTime) {
+    public void OnTick(float deltaTime) {
         _lifetime -= deltaTime;
 
         if (_lifetime < 0) {

@@ -2,7 +2,7 @@
 
 namespace Asteroids.Behavior {
 
-public class Player : IBehavior {
+public class Player : ICollisionable, ITickable, IDestroyable {
     private readonly IRound _round;
 
     private Vector _moveVector;
@@ -39,11 +39,11 @@ public class Player : IBehavior {
         _collider = _round.Field.CreateCollider(this, position, Static.PlayerSize);
     }
 
-    void IBehavior.OnDestroy() {
+    public void OnDestroy() {
         _round.Field.DestroyCollider(_collider);
     }
 
-    void IBehavior.OnCollision(IBehavior other) {
+    public void OnCollision(IBehavior other) {
         if (other is Asteroid asteroid) {
             _round.GameOver();
         }
@@ -57,7 +57,7 @@ public class Player : IBehavior {
         }
     }
 
-    void IBehavior.OnTick(float deltaTime) {
+    public void OnTick(float deltaTime) {
         _bulletCooldown = System.Math.Max(0, _bulletCooldown - deltaTime);;
         _laserCooldown = System.Math.Max(0, _laserCooldown - deltaTime);
 

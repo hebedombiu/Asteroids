@@ -1,6 +1,6 @@
 ﻿namespace Asteroids.Behavior {
 
-public class Asteroid : Projectile, IBehavior {
+public class Asteroid : Projectile {
     private Asteroid(IRound round, Vector moveVector) : base(round, moveVector) { }
 
     public static Asteroid Create(IRound round, Vector position, Vector direction) {

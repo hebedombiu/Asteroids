@@ -2,7 +2,7 @@
 
 namespace Asteroids.Behavior {
 
-public abstract class Projectile : IBehavior {
+public abstract class Projectile : ICollisionable, ITickable, IDestroyable {
     protected readonly IRound Round;
     protected readonly Vector MoveVector;
 

@@ -70,10 +70,10 @@ public class Round : IRound, IRoundData, IPlayerData {
         CreateBehaviorEvent?.Invoke(behavior);
     }
 
-    public void DestroyBehavior(IBehavior behavior) {
-        behavior.OnDestroy();
-        _behaviors.Remove(behavior);
-        DestroyBehaviorEvent?.Invoke(behavior);
+    public void DestroyBehavior(IDestroyable destroyable) {
+        destroyable.OnDestroy();
+        _behaviors.Remove(destroyable);
+        DestroyBehaviorEvent?.Invoke(destroyable);
     }
 
     public void GameOver() {
@@ -86,7 +86,7 @@ public class Round : IRound, IRoundData, IPlayerData {
 
     private void CallTicks(float deltaTime) {
         foreach (var behavior in _behaviors.ToArray()) {
-            behavior.OnTick(deltaTime);
+            if (behavior is ITickable tickable) tickable.OnTick(deltaTime);
         }
     }
 
