@@ -7,7 +7,7 @@ public class Laser : ICollisionable, ITickable, IDestroyable {
     private readonly Vector _startPosition;
     private readonly Vector _direction;
 
-    private ICollider[] _collisions;
+    private ICollider _collider;
 
     private float _lifetime = Static.LaserLifetime;
 
@@ -28,17 +28,12 @@ public class Laser : ICollisionable, ITickable, IDestroyable {
     }
 
     private void OnCreate() {
-        var count = (int)System.Math.Round(Static.LaserRange / Size);
-        _collisions = new ICollider[count];
-        for (var i = 0; i < count; i++) {
-            _collisions[i] = _round.Field.CreateCollider(this, _startPosition + _direction.Normalized * Size * i, Size);
-        }
+        var collider = new LineSegmentCollider(this, StartPosition, EndPosition);
+        _collider = _round.Field.CreateCollider(collider);
     }
 
     public void OnDestroy() {
-        foreach (var collision in _collisions) {
-            _round.Field.DestroyCollider(collision);
-        }
+        _round.Field.DestroyCollider(_collider);
     }
 
     public void OnCollision(IBehavior other) { }

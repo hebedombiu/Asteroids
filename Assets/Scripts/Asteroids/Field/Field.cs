@@ -39,8 +39,7 @@ public class Field : IField {
         return new Vector(x, y);
     }
 
-    ICollider IField.CreateCollider(ICollisionable behavior, Vector position, float size) {
-        var collider = new Collider(behavior, size, position);
+    public T CreateCollider<T>(T collider) where T : ICollider {
         _colliders.Add(collider);
         return collider;
     }
@@ -49,7 +48,7 @@ public class Field : IField {
         _colliders.Remove(collider);
     }
 
-    void IField.MoveCollider(ICollider collider, Vector direction) {
+    void IField.MoveCollider(ICircleCollider collider, Vector direction) {
         collider.Position = PortalPosition(collider.Position + direction, collider.Size);
     }
 
@@ -63,7 +62,7 @@ public class Field : IField {
                 var c1 = a[i1];
                 var c2 = a[i2];
 
-                if ((c2.Position - c1.Position).Magnitude < c1.Size / 2 + c2.Size / 2) {
+                if (c1.IsCollide(c2)) {
                     collisions.Add((c1.Behavior, c2.Behavior));
                 }
             }

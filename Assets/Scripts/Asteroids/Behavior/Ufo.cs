@@ -5,7 +5,7 @@ namespace Asteroids.Behavior {
 public class Ufo : ICollisionable, ITickable, IDestroyable {
     private readonly IRound _round;
 
-    private ICollider _collider;
+    private ICircleCollider _collider;
 
     private Ufo(IRound round) {
         _round = round;
@@ -21,7 +21,8 @@ public class Ufo : ICollisionable, ITickable, IDestroyable {
     }
 
     private void OnCreate(Vector position) {
-        _collider = _round.Field.CreateCollider(this, position, Static.UfoSize);
+        var collider = new CircleCollider(this, Static.UfoSize, position);
+        _collider = _round.Field.CreateCollider(collider);
     }
 
     public void OnDestroy() {

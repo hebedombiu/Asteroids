@@ -14,7 +14,7 @@ public class Player : ICollisionable, ITickable, IDestroyable {
     private float _laserAddCooldown = Static.PlayerLaserAddCooldown;
     private int _laserCount = Static.PlayerLaserMaxCount;
 
-    private ICollider _collider;
+    private ICircleCollider _collider;
 
     public float RotationAngle => _rotationAngle;
     public float Size => _collider.Size;
@@ -36,7 +36,8 @@ public class Player : ICollisionable, ITickable, IDestroyable {
     }
 
     private void OnCreate(Vector position) {
-        _collider = _round.Field.CreateCollider(this, position, Static.PlayerSize);
+        var collider = new CircleCollider(this, Static.PlayerSize, position);
+        _collider = _round.Field.CreateCollider(collider);
     }
 
     public void OnDestroy() {

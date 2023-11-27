@@ -6,7 +6,7 @@ public abstract class Projectile : ICollisionable, ITickable, IDestroyable {
     protected readonly IRound Round;
     protected readonly Vector MoveVector;
 
-    private ICollider _collider;
+    private ICircleCollider _collider;
 
     public Vector Position => _collider.Position;
     public float Size => _collider.Size;
@@ -17,7 +17,8 @@ public abstract class Projectile : ICollisionable, ITickable, IDestroyable {
     }
 
     protected void OnCreate(Vector position, float size) {
-        _collider = Round.Field.CreateCollider(this, position, size);
+        var collider = new CircleCollider(this, size, position);
+        _collider = Round.Field.CreateCollider(collider);
     }
 
     public void OnDestroy() {

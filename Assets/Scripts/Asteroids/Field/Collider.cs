@@ -2,20 +2,14 @@
 
 namespace Asteroids.Field {
 
-public class Collider : ICollider {
-    private readonly ICollisionable _behavior;
-    private readonly float _size;
+public abstract class Collider : ICollider {
+    public ICollisionable Behavior { get; }
 
-    ICollisionable ICollider.Behavior => _behavior;
-    float ICollider.Size => _size;
-
-    public Vector Position { get; set; }
-
-    public Collider(ICollisionable behavior, float size, Vector position) {
-        _behavior = behavior;
-        _size = size;
-        Position = position;
+    protected Collider(ICollisionable behavior) {
+        Behavior = behavior;
     }
+
+    public abstract bool IsCollide(ICollider other);
 }
 
 }

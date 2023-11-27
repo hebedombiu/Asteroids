@@ -1,6 +1,4 @@
-﻿using Asteroids.Behavior;
-
-namespace Asteroids.Field {
+﻿namespace Asteroids.Field {
 
 public interface IField {
     public float Width { get; }
@@ -8,10 +6,10 @@ public interface IField {
 
     public Vector RandomPosition { get; }
 
-    ICollider CreateCollider(ICollisionable behavior, Vector position, float size);
+    T CreateCollider<T>(T collider) where T : ICollider;
     void DestroyCollider(ICollider collider);
 
-    void MoveCollider(ICollider collider, Vector direction);
+    void MoveCollider(ICircleCollider collider, Vector direction);
 }
 
 }
