@@ -1,57 +1,35 @@
-﻿using Asteroids.Field;
+﻿namespace Asteroids.Behavior {
 
-namespace Asteroids.Behavior {
-
-public class Bullet : IBehavior {
-    private readonly IRound _round;
-    private readonly Vector _moveVector;
-
-    private ICollider _collider;
-
+public class Bullet : Projectile, IBehavior {
     private float _lifetime = Static.BulletLifetime;
 
-    private Bullet(IRound round, Vector moveVector) {
-        _round = round;
-        _moveVector = moveVector;
-    }
-
-    public Vector Position => _collider.Position;
-    public float Size => _collider.Size;
+    private Bullet(IRound round, Vector moveVector) : base(round, moveVector) { }
 
     public static Bullet Create(IRound round, Vector position, Vector direction) {
         var bullet = new Bullet(round, direction * Static.BulletSpeed);
-        bullet.OnCreate(position);
+        bullet.OnCreate(position, Static.BulletSize);
         return bullet;
     }
 
-    private void OnCreate(Vector position) {
-        _collider = _round.Field.CreateCollider(this, position, Static.BulletSize);
-    }
-
-    void IBehavior.OnDestroy() {
-        _round.Field.DestroyCollider(_collider);
-    }
-
-    void IBehavior.OnCollision(IBehavior other) {
+    public override void OnCollision(IBehavior other) {
         if (other is Asteroid asteroid) {
-            _round.DestroyBehavior(this);
+            Round.DestroyBehavior(this);
         }
 
         if (other is Shard shard) {
-            _round.DestroyBehavior(this);
+            Round.DestroyBehavior(this);
         }
 
         if (other is Ufo ufo) {
-            _round.DestroyBehavior(this);
+            Round.DestroyBehavior(this);
         }
     }
 
-    void IBehavior.OnTick(float deltaTime) {
+    public override void OnTick(float deltaTime) {
+        base.OnTick(deltaTime);
+
         _lifetime -= deltaTime;
-
-        _round.Field.MoveCollider(_collider, _moveVector * deltaTime);
-
-        if (_lifetime < 0) _round.DestroyBehavior(this);
+        if (_lifetime < 0) Round.DestroyBehavior(this);
     }
 }
 
