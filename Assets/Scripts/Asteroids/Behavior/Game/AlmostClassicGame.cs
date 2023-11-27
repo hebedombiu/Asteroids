@@ -24,7 +24,7 @@ public class AlmostClassicGame : ITickable, IGameBehavior {
 
         _round.CreateBehavior(Player);
 
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < Static.StartAsteroidCount; i++) {
             _round.CreateBehavior(Asteroid.Create(_round, _round.Field.RandomPosition, Math.RandomDirection()));
         }
     }

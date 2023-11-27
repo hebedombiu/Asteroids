@@ -1,6 +1,8 @@
 ﻿namespace Asteroids {
 
 public static class Static {
+    public const int StartAsteroidCount = 5;
+
     public const float AsteroidSize = 1f;
     public const float AsteroidSpeed = 1.5f;
     public const int AsteroidPrice = 100;
